@@ -2,8 +2,9 @@
 
 public class City : BaseEntity
 {
-    public required string Country { get; set; }
+    public required string Code { get; set; }
+    public Guid CountryId { get; set; }
     public required string Name { get; set; }
-    public required int Code { get; set; }
-    public required string Note { get; set; }
+    
+    public Country? Country { get; set; }
 }

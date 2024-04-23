@@ -3,15 +3,14 @@ using Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Application
+namespace Application;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
-        {
-            services.AddScoped<IBaseService<Building>, BuildingService>();
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            return services;
-        }
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        return services;
     }
 }

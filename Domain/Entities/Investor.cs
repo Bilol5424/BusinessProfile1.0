@@ -6,22 +6,12 @@ public class Investor : BaseEntity
     public required string LastName { get; set; }
     public string? MiddleName { get; set; }
     public required string Email { get; set; }
-    public required string Password { get; set; }
-    /*public Guid AddressId { get; set; }*/
+    public Guid AddressId { get; set; }
     public bool IsActive { get; set; }
     public required string Organization { get; set; }
     public string? AboutMe { get; set; }
-    public DateTime RegistrationDate { get; set; }
-    public DateOnly DateOfBirth { get; set; }
+    public DateOnly BirthDate { get; set; }
 
+    public Address? Address { get; set; }
+    public List<Investment>? Investments { get; set; }
 }
-/*Investor
-    Startup
-Addres
-Investment
-InvestmentStatus
-StartupCategory
-StartupFile
-StartupFinancialData
-User
-*/
