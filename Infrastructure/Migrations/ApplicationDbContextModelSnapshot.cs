@@ -17,379 +17,762 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Apartment", b =>
+            modelBuilder.Entity("Domain.Entities.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
-                    b.Property<Guid>("EntranceId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ApartmentNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CityId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<bool>("HasBalcon")
-                        .HasColumnType("bit");
+                    b.Property<Guid>("CountryId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<double>("LivingArea")
-                        .HasColumnType("float");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<int>("Number")
-                        .HasMaxLength(20)
-                        .HasColumnType("int");
+                    b.Property<string>("House")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<int>("NumberRooms")
-                        .HasColumnType("int");
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<decimal>("PricePerSquare")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("Domain.Entities.City", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid>("CountryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("City");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("30395d79-364f-4443-9ef7-a6f2b0dbf48f"),
+                            Code = "DUS",
+                            CountryId = new Guid("2757e51b-80f6-4aeb-86da-9369ccd9b8a1"),
+                            CreatedDate = new DateTime(2024, 4, 24, 12, 51, 58, 142, DateTimeKind.Utc).AddTicks(9117),
+                            Name = "Dushanbe"
+                        },
+                        new
+                        {
+                            Id = new Guid("4bdc5646-122f-425d-81b4-5a0e365366e8"),
+                            Code = "KHU",
+                            CountryId = new Guid("2757e51b-80f6-4aeb-86da-9369ccd9b8a1"),
+                            CreatedDate = new DateTime(2024, 4, 24, 12, 51, 58, 142, DateTimeKind.Utc).AddTicks(9131),
+                            Name = "Khujand"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Country", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Country");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2757e51b-80f6-4aeb-86da-9369ccd9b8a1"),
+                            Code = "TJ",
+                            CreatedDate = new DateTime(2024, 4, 24, 12, 51, 58, 143, DateTimeKind.Utc).AddTicks(561),
+                            Name = "Tajikistan"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Investment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("InvestmentDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("InvestorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("InvestorId1")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("StartupId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("StartupId1")
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<double>("TotalArea")
-                        .HasColumnType("float");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("EntranceId");
+                    b.HasIndex("InvestorId");
 
-                    b.ToTable("Apartments");
+                    b.HasIndex("InvestorId1");
+
+                    b.HasIndex("StartupId");
+
+                    b.HasIndex("StartupId1");
+
+                    b.ToTable("Investment");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Building", b =>
+            modelBuilder.Entity("Domain.Entities.Investor", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
-                    b.Property<string>("Address")
+                    b.Property<string>("AboutMe")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<int>("BuildingClass")
-                        .HasColumnType("int");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<double>("CeilingHeight")
-                        .HasColumnType("float");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("EntrancesCount")
-                        .HasColumnType("int");
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<bool>("HasLift")
-                        .HasColumnType("bit");
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("longtext");
 
-                    b.Property<int>("Material")
-                        .HasColumnType("int");
+                    b.Property<string>("Organization")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Investor");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Startup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("LinkedinProfile")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<bool>("RestSector")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Buildings");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Deal", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ApartmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApartmentId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("Deals");
-                });
-
-            modelBuilder.Entity("Domain.Entities.DealDocument", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DealId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DocumentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DealId");
-
-                    b.HasIndex("DocumentId");
-
-                    b.ToTable("DealDocuments");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Document", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ApartmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApartmentId");
-
-                    b.ToTable("Documents");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Entrance", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BuildingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("HasList")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("NumberApartmentPerFloor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberFloor")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuildingId");
-
-                    b.ToTable("Entrances");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Person", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<Guid>("DocumentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("Organization")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("SocialMediaProfiles")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("StartupCategoryId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Person");
+                    b.HasIndex("AddressId");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Person");
+                    b.HasIndex("StartupCategoryId");
 
-                    b.UseTphMappingStrategy();
+                    b.ToTable("Startup");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
+            modelBuilder.Entity("Domain.Entities.StartupCategory", b =>
                 {
-                    b.HasBaseType("Domain.Entities.Person");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.HasDiscriminator().HasValue("Customer");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StartupCategory");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Employee", b =>
+            modelBuilder.Entity("Domain.Entities.StartupFile", b =>
                 {
-                    b.HasBaseType("Domain.Entities.Person");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.HasDiscriminator().HasValue("Employee");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("FileType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StartupId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StartupId");
+
+                    b.ToTable("StartupFile");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Apartment", b =>
+            modelBuilder.Entity("Domain.Entities.StartupFinancialData", b =>
                 {
-                    b.HasOne("Domain.Entities.Entrance", "Entrance")
-                        .WithMany("Apartments")
-                        .HasForeignKey("EntranceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
-                    b.Navigation("Entrance");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("CurrentValuation")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("FundingRound")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("RequiredInvestmentAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StageOfDevelopment")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StartupId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StartupId");
+
+                    b.ToTable("StartupFinancialData");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Deal", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.HasOne("Domain.Entities.Apartment", "Apartment")
-                        .WithMany("Deals")
-                        .HasForeignKey("ApartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
 
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany("Deals")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
 
-                    b.HasOne("Domain.Entities.Employee", "Employee")
-                        .WithMany("Deals")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
-                    b.Navigation("Apartment");
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
-                    b.Navigation("Customer");
+                    b.HasKey("Id");
 
-                    b.Navigation("Employee");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("Roles", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.DealDocument", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.Deal", "Deal")
-                        .WithMany("DealDocuments")
-                        .HasForeignKey("DealId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("UserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Address", b =>
+                {
+                    b.HasOne("Domain.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Document", "Document")
-                        .WithMany("DealDocuments")
-                        .HasForeignKey("DocumentId")
+                    b.HasOne("Domain.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Deal");
+                    b.Navigation("City");
 
-                    b.Navigation("Document");
+                    b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Document", b =>
+            modelBuilder.Entity("Domain.Entities.City", b =>
                 {
-                    b.HasOne("Domain.Entities.Apartment", null)
-                        .WithMany("Documents")
-                        .HasForeignKey("ApartmentId");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Entrance", b =>
-                {
-                    b.HasOne("Domain.Entities.Building", "Building")
-                        .WithMany("Entrances")
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("Domain.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Building");
+                    b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Apartment", b =>
+            modelBuilder.Entity("Domain.Entities.Investment", b =>
                 {
-                    b.Navigation("Deals");
+                    b.HasOne("Domain.Entities.Investor", "Investor")
+                        .WithMany()
+                        .HasForeignKey("InvestorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Documents");
+                    b.HasOne("Domain.Entities.Investor", null)
+                        .WithMany("Investments")
+                        .HasForeignKey("InvestorId1");
+
+                    b.HasOne("Domain.Entities.Startup", "Startup")
+                        .WithMany()
+                        .HasForeignKey("StartupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Startup", null)
+                        .WithMany("Investments")
+                        .HasForeignKey("StartupId1");
+
+                    b.Navigation("Investor");
+
+                    b.Navigation("Startup");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Building", b =>
+            modelBuilder.Entity("Domain.Entities.Investor", b =>
                 {
-                    b.Navigation("Entrances");
+                    b.HasOne("Domain.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Deal", b =>
+            modelBuilder.Entity("Domain.Entities.Startup", b =>
                 {
-                    b.Navigation("DealDocuments");
+                    b.HasOne("Domain.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.StartupCategory", "StartupCategory")
+                        .WithMany()
+                        .HasForeignKey("StartupCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("StartupCategory");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Document", b =>
+            modelBuilder.Entity("Domain.Entities.StartupFile", b =>
                 {
-                    b.Navigation("DealDocuments");
+                    b.HasOne("Domain.Entities.Startup", "Startup")
+                        .WithMany()
+                        .HasForeignKey("StartupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Startup");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Entrance", b =>
+            modelBuilder.Entity("Domain.Entities.StartupFinancialData", b =>
                 {
-                    b.Navigation("Apartments");
+                    b.HasOne("Domain.Entities.Startup", "Startup")
+                        .WithMany()
+                        .HasForeignKey("StartupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Startup");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Navigation("Deals");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Employee", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.Navigation("Deals");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Investor", b =>
+                {
+                    b.Navigation("Investments");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Startup", b =>
+                {
+                    b.Navigation("Investments");
                 });
 #pragma warning restore 612, 618
         }

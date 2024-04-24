@@ -9,7 +9,7 @@ namespace Application.Common.Mapping
     {
         public BuildingMapProfile() {
             CreateMap<CreateBuildingRequest, Building>();
-            CreateMap<Building, SingleBuildingResponse>();
+            CreateMap<Building, SingleInvestorResponse>();
         }
     }
 }
